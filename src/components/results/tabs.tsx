@@ -68,7 +68,7 @@ const TabsYT = ({ data }: { data: any }) => {
           <>
             <p>
               {data?.tags.map((tag: any, i: any) => (
-                <p>tag</p>
+                <p key={i}>{tag}</p>
               ))}
             </p>
           </>
