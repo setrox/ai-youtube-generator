@@ -2,12 +2,23 @@ import React, { useState } from "react";
 import SearchMenu from "./search";
 import { FaArrowRightLong } from "react-icons/fa6";
 import Header from "../header";
-const SearchingScreen = () => {
+
+const SearchingScreen = ({
+  updateData,
+  updateScreen,
+  updateLoading,
+  loading,
+}: {
+  updateData: any;
+  updateScreen: any;
+  updateLoading: any;
+  loading: any;
+}) => {
   return (
     <div className="min-h-screen flex flex-col  ">
       <Header />
       <div className=" h-full flex-1 flex items-center justify-center">
-        <div className="w-[40%]  h-full m-auto  flex flex-col items-start justify-center">
+        <div className="w-[90%] md:w-[70%] lg:w-[60%] xl:w-[40%]   h-full m-auto  flex flex-col items-start justify-center">
           <div>
             <h1 className=" capitalize text-4xl font-bold">
               Enter prompt to generate
@@ -28,7 +39,12 @@ const SearchingScreen = () => {
             </div>
           </div>
           <div className="px-2 w-full">
-            <SearchMenu />
+            <SearchMenu
+              updateLoading={updateLoading}
+              loading={loading}
+              updateScreen={updateScreen}
+              updateData={updateData}
+            />
           </div>
         </div>
       </div>

@@ -1,17 +1,56 @@
 import React, { useState } from "react";
 import useHttp from "@/hook/use-http";
 
-const SearchMenu = () => {
+const SearchMenu = ({
+  updateData,
+  updateScreen,
+  updateLoading,
+  loading,
+}: {
+  updateData: any;
+  updateScreen: any;
+  updateLoading: any;
+  loading: any;
+}) => {
   const [query, setQuery] = useState("");
   const { searchQuery } = useHttp();
 
   const handleFormSubmit = (event: any) => {
     event.preventDefault();
+    if (loading) return;
+    updateLoading(true);
 
     console.log({ query });
 
-    // Perform the HTTP request using the searchQuery state
-    // sendRequest(searchQuery);
+    searchQuery(
+      query,
+      (res: any) => {
+        console.log({ res });
+        updateData(res);
+
+        setTimeout(() => {
+          updateLoading(false);
+          updateScreen(2);
+        }, 2000);
+      },
+      (err: any) => {
+        console.log({ err });
+        updateLoading(false);
+
+        // testing
+        updateData({
+          title: "Gain 1000 subscriber on youtube",
+          description:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, laborum est veritatis autem sint ratione ipsam aliquam eligendi cum. Deleniti minima natus commodi modi? Fuga autem vero nam. Cupiditate, maxime!",
+          tags: ["one", "two", "three"],
+        });
+
+        setTimeout(() => {
+          updateLoading(false);
+          updateScreen(2);
+        }, 2000);
+      }
+    );
   };
 
   return (
@@ -39,21 +78,25 @@ const SearchMenu = () => {
               type="submit"
               className="absolute w-[5rem] items-center text-center flex justify-center top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-app  rounded-e-lg border border-app  hover:bg-app/95 focus:outline-none"
             >
-              <svg
-                className="w-4 h-4"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
+              {loading ? (
+                "..."
+              ) : (
+                <svg
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+              )}
               <span className="sr-only">Search</span>
             </button>
           </div>
